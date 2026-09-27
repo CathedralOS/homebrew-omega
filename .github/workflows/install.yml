@@ -1,0 +1,52 @@
+name: Public installation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-14, ubuntu-22.04]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: CathedralOS/Omega
+          ref: 96e7d296d8a47c4ea297fe8d60d727e2a7b72c9b
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Expose Homebrew on Linux
+        if: runner.os == 'Linux'
+        run: echo /home/linuxbrew/.linuxbrew/bin >> "$GITHUB_PATH"
+      - name: Install from the public tap
+        run: |
+          brew install cathedralos/omega/omega
+          omega --version
+          brew test cathedralos/omega/omega
+      - name: Build and run with a freshly acquired Git dependency
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          import sys
+          sys.path.insert(0, 'tools/release')
+          import package
+          executable = Path(shutil.which('omega')).resolve()
+          manifest = package.verify_manifest(executable.parent.parent)
+          workspace = Path('build/public-install').resolve()
+          workspace.mkdir(parents=True)
+          package.git_source_smoke(executable, manifest, workspace)
+          PY
+      - name: Uninstall
+        if: always()
+        run: brew uninstall --force cathedralos/omega/omega
