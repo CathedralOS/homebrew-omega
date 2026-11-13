@@ -10,17 +10,17 @@ class Omega < Formula
     depends_on macos: :sonoma
     depends_on arch: :arm64
     url "https://github.com/CathedralOS/Omega/releases/download/v0.1.0-alpha.3/omega-0.1.0-alpha.3-aarch64-apple-darwin.tar.gz"
-    sha256 "9280b77ad1abf1b4fb93c3d4dca87c5ee68c1a11f169e63558d985fda90281fd"
+    sha256 "07b52a6d1fc1ae53497ed3d7c85e173f3f74173d01371980eeef5486baa2b593"
   end
 
   on_linux do
     on_intel do
       url "https://github.com/CathedralOS/Omega/releases/download/v0.1.0-alpha.3/omega-0.1.0-alpha.3-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "76fffa0d414eee2691a347f0142d819f553eaf4abc46139a4a9c8df6b18b07e8"
+      sha256 "fd983aa90d85df75a3a8e98d78729deb879706005edba4661893c4bb8e261b17"
     end
     on_arm do
       url "https://github.com/CathedralOS/Omega/releases/download/v0.1.0-alpha.3/omega-0.1.0-alpha.3-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "ee430e3f258acc5c3f08b2bf54f24cbda73952b886b7c95b381f67bb54966a5e"
+      sha256 "4e7d04daec8cbd305143bd9db2459af322c2a56ad296d128f981aae92d398358"
     end
   end
 
